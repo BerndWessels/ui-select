@@ -1,0 +1,25 @@
+/** The element's general styles.
+  * Put only general styles in here that apply to all themes.
+  */
+
+:host {
+    box-sizing: border-box;
+    padding: 4px;
+    border: 1px solid #cccccc;
+}
+
+#input {
+    border: 0;
+    border-style: none;
+    background-color: transparent;
+}
+
+#popup {
+    display: none;
+    position: absolute;
+    left: 0;
+    padding: 4px;
+    box-sizing: border-box;
+    background-color: #ffffff;
+    box-shadow: 0 0 4px #aaaaaa;
+}

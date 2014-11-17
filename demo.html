@@ -1,0 +1,237 @@
+<!doctype html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
+    <title>ui-select Demo</title>
+
+    <script src="../platform/platform.js"></script>
+    <link rel="import" href="../polymer/polymer.html">
+    <link rel="import" href="ui-select.html">
+
+    <style shim-shadowdom>
+        html {
+            font-family: Arial, sans-serif;
+        }
+
+        html /deep/ ui-select /deep/ ::content [option][selected]::after {
+            content: ";";
+            margin-right: 4px;
+        }
+
+        html /deep/ ui-select /deep/ ::content [option]:not([selected]) {
+            color: green;
+        }
+
+        html /deep/ ui-select /deep/ ::content [option][focused]:not([selected]) {
+            color: blue;
+            background: #aaaaaa;
+        }
+
+        html /deep/ ui-select /deep/ ::content [option]:not([selected]):hover {
+            background: #cccccc;
+        }
+
+        html /deep/ ui-select /deep/ #input {
+            min-width: 100px;
+        }
+    </style>
+
+</head>
+<body unresolved>
+
+<!-- A demo element adding typical functionality to an ui-select element. -->
+<polymer-element name="ui-select-demo">
+    <template>
+        <p tabindex="0">An `ui-select` looks like this:</p>
+        <section>
+            <ui-select id="select" filter="{{filter}}" filterFocused="{{filterFocused}}">
+                <template repeat="{{option, index in selectedOptions}}">
+                    <div option selected tabindex="0" index="{{index}}" on-keydown="{{selectedOptionKeydownAction}}"
+                         value="{{option.value}}">{{option.text}}
+                    </div>
+                </template>
+                <template repeat="{{option, index in filteredOptions}}">
+                    <!-- Use the mousedown event because the popup blur will prevent the click event. -->
+                    <div option index="{{index}}" on-mousedown="{{selectedOptionMousedownAction}}"
+                         focused?="{{option.focused}}" value="{{option.value}}">{{option.text}}
+                    </div>
+                </template>
+            </ui-select>
+        </section>
+    </template>
+    <script>
+        Polymer({
+            // Initialize properties.
+            created: function () {
+                // The current filter.
+                this.filter = '';
+                // The options matching the current filter.
+                this.filteredOptions = [];
+                // The selected options.
+                this.selectedOptions = [];
+            },
+            // Query the options when the filter changes.
+            filterChanged: function (oldValue, newValue) {
+                this.queryOptions();
+            },
+            // Query the options when the filter gets focused.
+            filterFocusedChanged: function (oldValue, newValue) {
+                if (newValue) {
+                    this.queryOptions();
+                }
+            },
+            // Query the options.
+            queryOptions: function () {
+                // Simulate an async call to a webservice that takes some time to return.
+                this.async(function () {
+                    // Usually coming from an ajax call to a webservice.
+                    var ajaxResponse = [
+                        {value: "first", text: "1st Option A"},
+                        {value: "second", text: "2nd Option A"},
+                        {value: "third", text: "3rd Option B"},
+                        {value: "fourth", text: "4th Option B"},
+                        {value: "fifth", text: "5th Option B"},
+                        {value: "sixth", text: "6th Option B"},
+                        {value: "seventh", text: "7th Option B"}
+                    ];
+                    // Usually already filtered by the query on the webservice.
+                    this.filteredOptions = ajaxResponse.filter(function (item) {
+                        // All options that match the query ...
+                        var a = item.text.toLowerCase().trim().indexOf(this.filter.toLowerCase().trim()) !== -1;
+                        // ... and are not already selected.
+                        var b = this.selectedOptions.findIndex(function (selectedItem) {
+                                return selectedItem.value == item.value;
+                            }) == -1;
+                        return a && b;
+                    }, this);
+                }, null, 250);
+            },
+            // Find the focused option.
+            get focusedOption() {
+                return this.filteredOptions.find(function (option, index) {
+                    return option.focused;
+                }, this);
+            },
+            // Find the index of the focused option.
+            get focusedOptionIndex() {
+                return this.filteredOptions.findIndex(function (option, index) {
+                    if (option.focused)
+                        return true;
+                }, this);
+            },
+            // Delegate events to action handlers.
+            eventDelegates: {
+                keydown: 'keydownAction'
+            },
+            // Catch the cursor keys.
+            keydownAction: function (e) {
+                // Up key pressed.
+                if (e.keyCode == 38) {
+                    var index = this.focusedOptionIndex;
+                    if (index > 0) {
+                        delete this.filteredOptions[index].focused;
+                        this.filteredOptions[index - 1].focused = true;
+                    }
+                }
+                // Down key pressed.
+                else if (e.keyCode == 40) {
+                    var index = this.focusedOptionIndex;
+                    if (index < this.filteredOptions.length - 1) {
+                        if (index > -1) {
+                            delete this.filteredOptions[index].focused;
+                        }
+                        this.filteredOptions[index + 1].focused = true;
+                    }
+                }
+                // Enter key pressed.
+                else if (e.keyCode == 13) {
+                    var option = this.focusedOption;
+                    if (option) {
+                        this.selectedOptions.push(option);
+                        // Refresh the popup.
+                        this.filter.length > 0 ? this.filter = '' : this.queryOptions();
+                    }
+                }
+                // Escape key pressed.
+                else if (e.keyIdentifier == 'U+001B' || e.keyCode == 27) {
+                }
+            },
+            // Process the key down events on selected options.
+            selectedOptionKeydownAction: function (e) {
+                // Delete key pressed.
+                if (e.keyIdentifier == 'U+007f' || e.keyCode == 46) {
+                    // Get the index of the selected option.
+                    var index = e.target.attributes['index'].value;
+                    // Remove the option from the selected options.
+                    this.selectedOptions.splice(index, 1);
+                    // Focus the input which will also refresh the popup.
+                    this.$.select.$.input.focus();
+                }
+            },
+            // Process the key down events on selected options.
+            selectedOptionMousedownAction: function (e) {
+                // Get the index of the selected option.
+                var index = e.target.attributes['index'].value;
+                // Remove the option from the selected options.
+                this.selectedOptions.push(this.filteredOptions[index]);
+                // Focus the input which will also refresh the popup.
+                this.async(function(){
+                    this.$.select.$.input.focus();
+                }, null, 0);
+            }
+        });
+    </script>
+</polymer-element>
+
+<!-- The demo element. -->
+<ui-select-demo></ui-select-demo>
+
+<!-- Polyfills used in this demo (taken from MDN). -->
+<script>
+    if (!Array.prototype.findIndex) {
+        Array.prototype.findIndex = function (predicate) {
+            if (this == null) {
+                throw new TypeError('Array.prototype.find called on null or undefined');
+            }
+            if (typeof predicate !== 'function') {
+                throw new TypeError('predicate must be a function');
+            }
+            var list = Object(this);
+            var length = list.length >>> 0;
+            var thisArg = arguments[1];
+            var value;
+
+            for (var i = 0; i < length; i++) {
+                value = list[i];
+                if (predicate.call(thisArg, value, i, list)) {
+                    return i;
+                }
+            }
+            return -1;
+        };
+    }
+    if (!Array.prototype.find) {
+        Array.prototype.find = function (predicate) {
+            if (this == null) {
+                throw new TypeError('Array.prototype.find called on null or undefined');
+            }
+            if (typeof predicate !== 'function') {
+                throw new TypeError('predicate must be a function');
+            }
+            var list = Object(this);
+            var length = list.length >>> 0;
+            var thisArg = arguments[1];
+            var value;
+
+            for (var i = 0; i < length; i++) {
+                value = list[i];
+                if (predicate.call(thisArg, value, i, list)) {
+                    return value;
+                }
+            }
+            return undefined;
+        };
+    }
+</script>
+</body>
+</html>

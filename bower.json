@@ -1,0 +1,18 @@
+{
+    "name": "ui-select",
+    "version": "0.1.0",
+    "keywords": [
+        "ui",
+        "select",
+        "polymer",
+        "web-components"
+    ],
+    "main": "ui-select.html",
+    "dependencies": {
+        "polymer": "Polymer/polymer#^0.4.0",
+        "ui-theme": "BerndWessels/ui-theme#^0.1.0"
+    },
+    "devDependencies": {
+        "polymer-test-tools": "Polymer/polymer-test-tools#^0.4.0"
+    }
+}
