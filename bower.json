@@ -1,0 +1,7 @@
+{
+  "name": "ui-select#gh-pages",
+  "private": true,
+  "dependencies": {
+    "ui-select": "BerndWessels/ui-select#master"
+  }
+}

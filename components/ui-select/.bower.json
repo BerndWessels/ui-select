@@ -1,0 +1,28 @@
+{
+  "name": "ui-select",
+  "keywords": [
+    "ui",
+    "select",
+    "polymer",
+    "web-components"
+  ],
+  "main": "ui-select.html",
+  "dependencies": {
+    "polymer": "Polymer/polymer#^0.4.0",
+    "ui-theme": "BerndWessels/ui-theme#^0.1.0"
+  },
+  "devDependencies": {
+    "polymer-test-tools": "Polymer/polymer-test-tools#^0.4.0"
+  },
+  "homepage": "https://github.com/BerndWessels/ui-select",
+  "_release": "23ec158049",
+  "_resolution": {
+    "type": "branch",
+    "branch": "master",
+    "commit": "23ec158049d73afc586ac975cfe0eeb980963dae"
+  },
+  "_source": "git://github.com/BerndWessels/ui-select.git",
+  "_target": "master",
+  "_originalSource": "BerndWessels/ui-select",
+  "_direct": true
+}

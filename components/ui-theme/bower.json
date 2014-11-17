@@ -1,0 +1,15 @@
+{
+    "name": "ui-theme",
+    "version": "0.1.0",
+    "keywords": [
+        "ui",
+        "theme",
+        "polymer",
+        "web-components"
+    ],
+    "main": "ui-theme.scss",
+    "dependencies": {
+    },
+    "devDependencies": {
+    }
+}

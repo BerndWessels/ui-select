@@ -1,0 +1,23 @@
+{
+  "name": "ui-theme",
+  "version": "0.1.0",
+  "keywords": [
+    "ui",
+    "theme",
+    "polymer",
+    "web-components"
+  ],
+  "main": "ui-theme.scss",
+  "dependencies": {},
+  "devDependencies": {},
+  "homepage": "https://github.com/BerndWessels/ui-theme",
+  "_release": "0.1.0",
+  "_resolution": {
+    "type": "version",
+    "tag": "v0.1.0",
+    "commit": "9b385d60e954da7a51dd4b1634df3778aff07f28"
+  },
+  "_source": "git://github.com/BerndWessels/ui-theme.git",
+  "_target": "^0.1.0",
+  "_originalSource": "BerndWessels/ui-theme"
+}

@@ -1,0 +1,51 @@
+<!--
+`ui-select` is an unstyled field that contains a selected options container
+followed by an input field and a options dropdown popup.
+
+It publishes the input's value as 'filter' and the input's focused status as 'filterFocused'.
+It only provides the frame, the user needs to implement the functionalities like providing options and
+selecting options.
+
+Accessibility
+-------------
+The following ARIA attributes are set automatically:
+- `aria-label`: set to the `placeholder` attribute
+- `aria-disabled`: set if `disabled` is true
+
+##### Example
+
+    <ui-select filter="filter" filterFocused="filterFocused">
+        <div option value="1">One</div>
+        <div option selected value="2">Two</div>
+        <div option selected value="3">Three</div>
+        <div option value="4">Four</div>
+    </ui-select>
+
+@element ui-select
+@group UI Elements
+@blurb `ui-select` `ui-select` is an unstyled field that contains a selected options container
+followed by an input field and a options dropdown popup.
+@status beta
+@homepage http://BerndWessels.github.io/ui-select
+-->
+
+<!-- Import the elements dependencies. -->
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../ui-input/ui-input.html">
+<!-- The element's definition. -->
+<polymer-element name="ui-select" relative horizontal layout center wrap>
+    <template>
+        <!-- Import the element's base styles. -->
+        <link rel="stylesheet" href="ui-select.css">
+        <!-- The selected options. -->
+        <content select="[selected]"></content>
+        <!-- The input element. -->
+        <input flex is="ui-input" id="input" value="{{filter}}">
+        <!-- The options popup. -->
+        <div id="popup" multiple>
+            <content></content>
+        </div>
+    </template>
+    <!-- Import the element's scripts. -->
+    <script src="ui-select.js"></script>
+</polymer-element>
