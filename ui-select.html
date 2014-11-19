@@ -40,9 +40,9 @@ followed by an input field and a options dropdown popup.
         <!-- The selected options. -->
         <content select="[selected]"></content>
         <!-- The input element. -->
-        <input flex is="ui-input" id="input" value="{{filter}}">
+        <input flex is="ui-input" id="input" value="{{filter}}" readonly?="{{standalone}}">
         <!-- The options popup. -->
-        <div id="popup" multiple>
+        <div id="popup">
             <content></content>
         </div>
     </template>

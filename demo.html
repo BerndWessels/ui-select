@@ -42,7 +42,15 @@
 <!-- A demo element adding typical functionality to an ui-select element. -->
 <polymer-element name="ui-select-demo">
     <template>
-        <p tabindex="0">An `ui-select` looks like this:</p>
+        <p tabindex="0">A standalone `ui-select` looks like this: [value='{{standaloneValue}}']</p>
+        <section>
+            <ui-select standalone="true" value="{{standaloneValue}}">
+                <div option value="1">First Option</div>
+                <div option value="2">Second Option</div>
+                <div option value="3">Third Option</div>
+            </ui-select>
+        </section>
+        <p tabindex="0">A customized `ui-select` looks like this:</p>
         <section>
             <ui-select id="select" filter="{{filter}}" filterFocused="{{filterFocused}}">
                 <template repeat="{{option, index in selectedOptions}}">
@@ -174,8 +182,8 @@
                 var index = e.target.attributes['index'].value;
                 // Remove the option from the selected options.
                 this.selectedOptions.push(this.filteredOptions[index]);
-                // Focus the input which will also refresh the popup.
-                this.async(function(){
+                // Focus the input.
+                this.async(function () {
                     this.$.select.$.input.focus();
                 }, null, 0);
             }

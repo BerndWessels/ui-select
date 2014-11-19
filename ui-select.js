@@ -32,6 +32,26 @@
                 this.hidePopup();
                 this.filterFocused = false;
             }.bind(this));
+            // Standalone mode.
+            if (this.standalone) {
+                // Listen to the click event on the input.
+                this.$.input.addEventListener('click', function (e) {
+                    this.updatePopup();
+                }.bind(this));
+                // Listen to the click event on the popup in standalone mode.
+                this.$.popup.addEventListener('mousedown', function (e) {
+                    // Find the option element.
+                    var target = e.target;
+                    while(target && !target.attributes.option){
+                        target = target.parentElement;
+                    }
+                    // Update to the selected value.
+                    if(target && target.attributes.hasOwnProperty('value')) {
+                        this.$.input.value = target.innerText;
+                        this.value = target.attributes.value.value;
+                    }
+                }.bind(this));
+            }
         },
         // An instance of the element was inserted into the DOM.
         attached: function () {
@@ -60,7 +80,9 @@
         // Optionally, the current value of a property can be reflected back to an attribute with a matching name.
         publish: {
             filter: '',
-            filterFocused: false
+            filterFocused: false,
+            standalone: false,
+            value: null
         },
         // Delegate events to action handlers.
         eventDelegates: {},
